@@ -1,0 +1,61 @@
+const Discord = require('discord.js-12')
+const db = require('quick.db')
+
+module.exports.updaterank = updaterank;
+
+function updaterank(message, clan) {
+    if (!clan.rank) clan.rank = { name: "Bois", value: 0, color: "a85420", icon: "https://cdn.discordapp.com/attachments/685384232293498947/880006340590833694/rank-bois.png" }
+
+    let points = clan.points
+
+    let newrank = { name: "Bois", value: 0, color: "a85420", icon: "https://cdn.discordapp.com/attachments/685384232293498947/880006340590833694/rank-bois.png" }
+    let rank = [
+        { name: "Bois", value: 0, color: "a85420", icon: "https://cdn.discordapp.com/attachments/685384232293498947/880006340590833694/rank-bois.png" },
+        { name: "Bronze I", value: 50, color: 'a85420', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/0/0c/Icon_Rank_21.png?width=960" },
+        { name: "Bronze II", value: 100, color: 'cd7f32', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/4/4a/Icon_Rank_22.png?width=960" },
+        { name: "Bronze III", value: 200, color: 'cd7f32', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/e/ef/Icon_Rank_23.png?width=960" },
+        { name: "Bronze IV", value: 350, color: 'a85420', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/7/7f/Icon_Rank_24.png?width=960" },
+        { name: "Bronze V", value: 550, color: 'cd7f32', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/b/b5/Icon_Rank_25.png?width=960" },
+        { name: "Argent I", value: 800, color: 'B4BEBE', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/5/5e/Icon_Rank_20.png?width=960" },
+        { name: "Argent II", value: 1200, color: 'B4BEBE', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/c/cf/Icon_Rank_17.png?width=960" },
+        { name: "Argent III", value: 1550, color: 'B4BEBE', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/1/19/Icon_Rank_18.png?width=960" },
+        { name: "Argent IV", value: 1950, color: 'B4BEBE', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/4/46/Icon_Rank_19.png?width=960" },
+        { name: "Argent V", value: 2400, color: 'B4BEBE', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/5/5e/Icon_Rank_20.png?width=960" },
+        { name: "Or I", value: 2900, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/a/ae/Icon_Rank_11.png?width=960" },
+        { name: "Or II", value: 3450, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/b/b6/Icon_Rank_12.png?width=960" },
+        { name: "Or III", value: 4050, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/8/8b/Icon_Rank_13.png?width=960" },
+        { name: "Or IV", value: 4700, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/b/b5/Icon_Rank_14.png?width=960" },
+        { name: "Or V", value: 5400, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/7/7e/Icon_Rank_15.png?width=960" },
+        { name: "Platinium I", value: 6150, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/4/48/Icon_Rank_6.png?width=960" },
+        { name: "Platinium II", value: 6950, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/b/b4/Icon_Rank_7.png?width=960" },
+        { name: "Platinium III", value: 7800, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/d/d6/Icon_Rank_8.png?width=960" },
+        { name: "Platinium IV", value: 8700, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/8/87/Icon_Rank_9.png?width=960" },
+        { name: "Platinium V", value: 9650, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/a/a8/Icon_Rank_10.png?width=960" },
+        { name: "Diamond I", value: 10650, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/4/42/Icon_Rank_3.png?width=960" },
+        { name: "Diamond II", value: 11700, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/d/d7/Icon_Rank_4.png?width=960" },
+        { name: "Diamond III", value: 12800, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/1/1b/Icon_Rank_5.png?width=960" },
+        { name: "Diamond IV", value: 13950, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/a/a1/Icon_rank_diamond1.png?width=960" },
+        { name: "Diamond V", value: 15150, color: 'FFD269', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/2/2e/Icon_rank_diamond.png?width=960" },
+        { name: "Commando", value: 16400, color: 'a85420', icon: " https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/9/93/Icon_rank_master.png?width=325" },
+        { name: "Légende", value: 17700, color: 'a85420', icon: "https://oyster.ignimgs.com/mediawiki/apis.ign.com/paladins-realm-royale/0/0d/Icon_Rank_1.png?width=325" }
+    ]
+
+    for (i = 0; i < rank.length; i++) {
+        if (points > rank[i].value) {
+            newrank = rank[i]
+        }
+    }
+    let role
+
+    if (message.member.roles.cache.find(r => r.name === "HypeSquad Bravery")) { role = message.member.roles.cache.find(r => r.name === "HypeSquad Bravery") }
+    else if (message.member.roles.cache.find(r => r.name === "HypeSquad Brilliance")) { role = message.member.roles.cache.find(r => r.name === "HypeSquad Brilliance") }
+    else if (message.member.roles.cache.find(r => r.name === "HypeSquad Balance")) { role = message.member.roles.cache.find(r => r.name === "HypeSquad Balance") }
+    db.set(clan.owner + ".clan.rank", newrank)
+    db.set(clan.owner + ".clan.hypesquad", role ? role.name : "none")
+    let owner = message.guild.members.cache.get(clan.owner)
+    if (newrank.value > clan.rank.value) owner.send('<:7664increasedupload:921759327994388572> Level UP !! Vous venez de passer rank `' + newrank.name + "` ! Bien joué")
+
+
+}
+
+
