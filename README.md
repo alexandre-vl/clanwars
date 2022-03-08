@@ -16,6 +16,19 @@ node index.js
 
 N'oubliez pas d'inscrire le token et le prefix dans le fichier `config.json`.
 
+## Features
+
+- Clans/Hypesquad
+- Système d'XP
+- Tournois
+- Duels
+- Salon temporaire
+- Shop
+- Invite Tracker
+
+## Exemples
+
+![alt text](http://url/to/img.png)
 
 ## Contribuation
 Tout le projet a été réalisé par moi même, et a été supervisé par **Salon4**
